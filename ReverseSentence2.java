@@ -1,4 +1,4 @@
-//可能这就是算法思想？temp为当前读取单词，遇到空格，加在结果res前，跳出循环，补上最后一个单词。16ms,9788k
+//可能这就是算法思想？temp为当前读取单词，遇到空格，加在结果res前，跳出循环，补上最后一个单词。
 public class Solution {
     public String ReverseSentence(String str) {
         int length=str.length();
