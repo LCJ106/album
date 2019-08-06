@@ -1,0 +1,40 @@
+/*地上有一个m行和n列的方格。一个机器人从坐标0,0的格子开始移动，每一次只能向左，右，上，下四个方向移动一格，
+但是不能进入行坐标和列坐标的数位之和大于k的格子。 例如，当k为18时，机器人能够进入方格（35,37），因为3+5+3+7 = 18。
+但是，它不能进入方格（35,38），因为3+5+3+8 = 19。请问该机器人能够达到多少个格子？*/
+import java.util.*;
+public class Solution {
+    int threshold;
+    int rows;
+    int cols;
+    int[][] array;
+    
+    //处理得到数位之和
+    int addString(int x,int y){
+        String string=x+""+y;
+        int res=0;
+        for(int i=0;i<string.length();i++){
+            res=res+string.charAt(i)-48;
+        }
+        return res;
+    }
+
+    int moving(int x,int y){
+        if(x<0||y<0||x>=cols||y>=rows||addString(x,y)>threshold)
+            return 0;
+        //判断该方格是否已经计算在内
+        if(array[y][x]==0){
+            array[y][x]=1;
+           return 1+moving(x+1,y)+moving(x-1,y)+moving(x,y-1)+moving(x,y+1);
+        }
+        else
+            return 0;
+    }
+    public int movingCount(int threshold, int rows, int cols)
+    {
+        this.threshold=threshold;
+        this.rows=rows;
+        this.cols=cols;
+        array=new int[rows][cols];
+        return moving(0,0);
+    }
+}
