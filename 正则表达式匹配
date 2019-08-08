@@ -1,0 +1,56 @@
+/*请实现一个函数用来匹配包括'.'和'*'的正则表达式。模式中的字符'.'表示任意一个字符，而'*'表示它前面的字符可以出现任意次（包含0次）。
+在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串"aaa"与模式"a.a"和"ab*ac*a"匹配，但是与"aa.a"和"ab*a"均不匹配*/
+public class Solution {
+    public boolean matches(String str1,String pattern1){  //要用到String类的方法,所以实现matches方法使参数为字符串而非字符数组
+        int pos=0;
+        while(pos<str1.length()&&pos<pattern1.length()&&
+              (str1.charAt(pos)==pattern1.charAt(pos)||pattern1.charAt(pos)=='.'))
+            pos++;
+        if(pos==pattern1.length())   //pattern1结束,判断str1是否结束
+            return pos==str1.length();
+            
+        //先判断str1的pos~str1.length()-1处有多少连续字符和pattern1的'*'后字符相同
+        if(pattern1.charAt(pos)=='*'){
+            int i=pos;                    
+            while(i<str1.length()&&pattern1.charAt(pos+1)==str1.charAt(i)){
+                   i++;
+            }
+            //特殊情况,*后是'.','.'和每个字符都匹配
+            if(pattern1.charAt(pos+1)=='.')
+                i=str1.length();
+            pattern1=pattern1.substring(pos+1);
+            
+            //  '*'后的片段应该加j个字符
+            for(int j=0;j<i-pos;j++){
+                int z=0;
+                String temp=pattern1;
+                while(z<j){
+                    temp=pattern1.charAt(0)+temp;
+                    z++;                  
+                }
+                if(matches(str1.substring(pos),temp))
+                    return true;
+            }
+            //substring()传参为字符串长度得到空字符串
+            if(matches(str1.substring(pos),pattern1.substring(1)))
+                return true;                        
+        }
+        return false;
+    }
+    public boolean match(char[] str, char[] pattern)  //翻转字符串,'*'在字母前边,易于判断
+    {
+        for(int i=0;i<str.length/2;i++){
+            char temp=str[i];
+            str[i]=str[str.length-1-i];
+            str[str.length-1-i]=temp;
+        }
+        for(int i=0;i<pattern.length/2;i++){
+            char temp=pattern[i];
+            pattern[i]=pattern[pattern.length-1-i];
+            pattern[pattern.length-1-i]=temp;
+        }
+        String str1=new String(str);
+        String pattern1=new String(pattern);
+        return matches(str1,pattern1); 
+    }
+}
