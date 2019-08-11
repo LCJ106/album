@@ -1,0 +1,52 @@
+/*请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所有字符的路径。路径可以从矩阵中的任意一个格子开始，每一步可以在矩阵中向左，向右，向上，
+向下移动一个格子。如果一条路径经过了矩阵中的某一个格子，则之后不能再次进入这个格子。 例如 a b c e s f c s a d e e 这样的3 X 4 矩阵中包含一条字符串
+"bcced"的路径，但是矩阵中不包含"abcb"路径，因为字符串的第一个字符b占据了矩阵中的第一行第二个格子之后，路径不能再次进入该格子。*/
+
+/*x,y矩阵坐标,index为应比对的字符串元素下标, matIndex为x,y对应的matrix[]中的下标
+flag记录矩阵某元素是否已在路径中*/
+public class Solution {
+    static char[] matrix;
+    static int rows,cols;
+    static char[] str;
+    public boolean hasPath(char[] matrix, int rows, int cols, char[] str)
+    {
+        Solution.matrix=matrix;
+        Solution.rows=rows;
+        Solution.cols=cols;
+        Solution.str=str;
+        for(int i=0;i<matrix.length;i++){
+            if(matrix[i]==str[0]){
+                boolean[] flag=new boolean[matrix.length];
+                //这里的对应关系,第n个元素的行数  (n-1)/cols+1,列数,(n-1)%cols+1,  y=行数-1
+                int y=i/cols;
+                int x=i%cols;
+                if(ifEquals(x,y,0,flag))
+                    return true;
+            }
+        }
+        return false;
+    
+    }
+   
+    public boolean ifEquals(int x,int y,int index,boolean[] flag){ 
+        //index==str.length,说明str全部比对成功,返回true
+        if(index==str.length)
+            return true;
+        if(y>=rows||x>=cols||x<0||y<0||flag[y*cols+x])
+            return false;
+        int matIndex=y*cols+x;
+        if(matrix[matIndex]!=str[index])
+            return false;
+        else{
+            flag[matIndex]=true;
+            boolean temp=ifEquals(x,y+1,index+1,flag)||ifEquals(x,y-1,index+1,flag)
+            ||ifEquals(x+1,y,index+1,flag)||ifEquals(x-1,y,index+1,flag);
+            //当前元素的路径走不通,重置false,以供其他路径使用该元素
+            if(!temp)
+                flag[matIndex]=false;
+            return temp;
+        }
+    }
+
+
+}
