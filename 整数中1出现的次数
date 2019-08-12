@@ -1,0 +1,23 @@
+/*求出1~13的整数中1出现的次数,并算出100~1300的整数中1出现的次数？为此他特别数了一下1~13中包含1的数字有1、10、11、12、13因此共出现6次,但是对于后面问题
+他就没辙了。ACMer希望你们帮帮他,并把问题更加普遍化,可以很快的求出任意非负整数区间中1出现的次数（从1 到 n 中1出现的次数）。*/
+public class Solution {
+    public static int NumberOf1Between1AndN_Solution(int n) {
+        if(n>=1&n<=9)
+            return 1;
+        if(n==0)
+            return 0;
+        String string=n+"";
+        int length=string.length();
+        int first=string.charAt(0)-48;
+        int sum=0,multiply=1;
+        //假设n为x......,算出x-1 99999包含的1数目,接下来再算x0000000到x........中1的个数
+        sum+=(length-1)*first*Math.pow(10,length-2);
+        if(first!=1)
+            sum+=Math.pow(10,length-1);
+        int remain=Integer.parseInt(string.substring(1));
+        sum+=NumberOf1Between1AndN_Solution(remain);
+        if(first==1)
+           sum+=remain+1;
+        return sum;
+    }
+}
