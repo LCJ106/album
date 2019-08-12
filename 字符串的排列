@@ -1,0 +1,46 @@
+/*输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+输入一个字符串,长度不超过9(可能有字符重复),字符只包括大小写字母。*/
+import java.util.*;
+public class Solution {
+    public ArrayList<String> Permutation(String str) {
+        ArrayList<String> list=permutation(str);
+        System.out.println(list);
+        ArrayList<String> res=new ArrayList<>();
+        String temp;
+        while(list.size()!=0){
+            temp=list.get(0);
+            for(int j=1;j<list.size();j++){
+                if(temp.compareTo(list.get(j))>0){
+                    temp=list.get(j);
+                }
+            }
+            res.add(temp);
+            list.remove(temp);
+        }
+        return res;
+    }
+    public ArrayList<String> permutation(String str){
+        boolean[] exist=new boolean[123];
+        ArrayList<String> list=new ArrayList<>();
+        int length=str.length();
+        if(length==1){
+            list.add(str);
+            return list;
+        }
+        for(int i=0;i<length;i++){
+            char ch=str.charAt(i);
+            if(exist[(int)ch])
+                continue;
+            else
+                exist[(int)ch]=true;
+            StringBuffer strBuffer=new StringBuffer(str);
+            ArrayList<String> temp=permutation(new String(strBuffer.deleteCharAt(i)));
+            Iterator it= temp.iterator();
+            while(it.hasNext()){
+                list.add(ch+(String)it.next());
+            }
+        }
+        return list;
+
+    }
+}
