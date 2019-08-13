@@ -1,0 +1,33 @@
+import java.util.*;
+public class Solution {
+    public TreeLinkNode GetNext(TreeLinkNode pNode)
+    {
+        boolean[] array=new boolean[2];
+        LinkedList<TreeLinkNode> list=new LinkedList<>();
+        TreeLinkNode root=pNode;
+        while(root.next!=null)
+            root=root.next;
+        middle(root,list,pNode,array);
+        return list.size()>0?list.get(0):null;
+    }
+    public void middle(TreeLinkNode node,LinkedList<TreeLinkNode> list,TreeLinkNode p,boolean[] array){
+        if(node==null)
+            return;
+        TreeLinkNode left = node.left;
+        TreeLinkNode right = node.right;
+        middle(left,list,p,array);
+        if(array[1])
+            return;
+        if(array[0]){
+            list.add(node);
+            array[1]=true;
+            return;
+        }
+        else if(node==p)
+            array[0]=true;
+        if(array[1])
+            return;
+        middle(right,list,p,array);
+        return;
+    }
+}
