@@ -1,0 +1,12 @@
+//写一个函数，求两个整数之和，要求在函数体内不得使用+、-、*、/四则运算符号。
+//算出不含进位的基本结果temp(异或),进位num2(与,得到结果左移一位),循环继续相加,进位num2为0返回
+public class Solution {
+    public int Add(int num1,int num2) {
+        while(num2!=0){
+            int temp=num1^num2;
+            num2=(num1&num2)<<1;
+            num1=temp;
+        }
+        return num1;
+    }
+}
