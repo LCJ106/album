@@ -1,0 +1,79 @@
+//请实现一个函数按照之字形打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右至左的顺序打印，第三行按照从左到右的顺序打印，其他行以此类推。
+//还是不要用类变量,容易出问题.思路和层序遍历类似
+import java.util.ArrayList;
+
+/*
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+        public ArrayList<ArrayList<Integer> > Print(TreeNode pRoot) {
+            int[] height=new int[1];
+            ArrayList<ArrayList<TreeNode>> total=new ArrayList<>();
+            ArrayList<TreeNode> list=new ArrayList<>();
+            ArrayList<ArrayList<Integer> > res=new ArrayList<>();
+            path(height,pRoot,list,total);
+            TreeNode temp=null;
+            for(int i=0;i<height[0];i++){
+                ArrayList<Integer> listInt=new ArrayList<>();
+                boolean flag=true;
+                if(i%2==0)
+                    for(int j=0;j<total.size();j++){
+                        if(i<total.get(j).size()){
+                           if(flag){
+                              temp=total.get(j).get(i);
+                              listInt.add(temp.val);
+                              flag=false;
+                           }
+                           if(total.get(j).get(i)!=temp){
+                               temp=total.get(j).get(i);
+                               listInt.add(temp.val);
+                           }
+                        }
+
+                    }
+                else
+                    for(int j=total.size()-1;j>=0;j--){
+                        if(i<total.get(j).size()){
+                            if(flag){
+                                temp=total.get(j).get(i);
+                                listInt.add(temp.val);
+                                flag=false;
+                            }
+                            if(total.get(j).get(i)!=temp){
+                               temp=total.get(j).get(i);
+                               listInt.add(temp.val);
+                            }
+                        }
+                    }
+                 res.add(listInt);
+            }
+            return res;
+
+        }
+        public void path(int[] height,TreeNode node,ArrayList<TreeNode> list,ArrayList<ArrayList<TreeNode>> total){
+            if(node==null)
+                return;
+            list.add(node);
+            if(node.right==null&&node.left==null){               
+                if(list.size()>height[0])
+                    height[0]=list.size();
+                total.add(list);
+                return;
+            }
+            ArrayList<TreeNode> newList=(ArrayList<TreeNode>)list.clone();
+            path(height,node.left,list,total);
+            path(height,node.right,newList,total);
+
+        }
+
+}
