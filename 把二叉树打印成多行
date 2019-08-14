@@ -1,0 +1,59 @@
+/*从上到下按层打印二叉树，同一层结点从左至右输出。每一层输出一行。*/
+import java.util.ArrayList;
+/*
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+   ArrayList<ArrayList<Integer> > Print(TreeNode pRoot) {
+        int[] height=new int[1];
+        ArrayList<ArrayList<TreeNode> > total=new ArrayList<>();
+        ArrayList<TreeNode> list=new ArrayList<>();
+        ArrayList<ArrayList<Integer> > res=new ArrayList<>();
+        path(height,pRoot,list,total);
+        for(int i=0;i<height[0];i++){
+            ArrayList<Integer> array=new ArrayList<>();
+            boolean flag=true;
+            TreeNode temp=null;
+            for(int j=0;j<total.size();j++){
+                if(i<total.get(j).size()){
+                    if(flag){
+                       flag=false;
+                       temp=total.get(j).get(i);
+                       array.add(temp.val);
+                    }
+                    if(total.get(j).get(i)!=temp){
+                        temp=total.get(j).get(i);
+                        array.add(temp.val);                
+                    }
+                }              
+            }
+            res.add(array);
+        }
+        return res;
+    }
+    void path(int[] height,TreeNode node,ArrayList<TreeNode> list,ArrayList<ArrayList<TreeNode> > total){
+        if(node==null)
+            return;
+        list.add(node);
+        if(node.left==null&&node.right==null){
+            if(list.size()>height[0])
+                height[0]=list.size();
+            total.add(list);
+            return;
+        }
+        ArrayList<TreeNode> newList=(ArrayList<TreeNode>)list.clone();
+        path(height,node.left,list,total);
+        path(height,node.right,newList,total);
+    }
+    
+}
