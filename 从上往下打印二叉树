@@ -1,0 +1,52 @@
+//从上往下打印出二叉树的每个节点，同层节点从左至右打印。
+//先获取从root到根节点的路径listTotal,然后依次输出listTotal(j)上的第i个节点,注意避免重复.
+public class Solution {
+    static int height;
+        public ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
+            ArrayList<ArrayList<TreeNode>> listTotal=new ArrayList<>();
+            ArrayList<TreeNode> list=new ArrayList<>();
+            ArrayList<Integer> res=new ArrayList<>();
+            path(root,list,listTotal);
+            TreeNode temp=null;
+            for(int i=0;i<height;i++){
+                boolean flag=true;
+                for(int j=0;j<listTotal.size();j++){
+                    if(i<listTotal.get(j).size()){
+                      if(flag){
+                          temp=listTotal.get(j).get(i);
+                          res.add(temp.val);
+                          flag=false;
+                       }
+                       if(listTotal.get(j).get(i)!=temp){
+                            res.add(listTotal.get(j).get(i).val);
+                            temp=listTotal.get(j).get(i);
+                       }
+                    }
+                    else{
+                        listTotal.remove(j);
+                        j--;
+                    }
+
+                }
+            }
+            return res;
+
+        }
+        public void path(TreeNode node, ArrayList<TreeNode> list, ArrayList<ArrayList<TreeNode>> total){
+            if(node==null){
+                return;
+            }
+            list.add(node);
+            if(node.left==null&&node.right==null){
+                total.add(list);
+                if(list.size()>height)
+                    height=list.size();
+                return;
+            }
+            ArrayList<TreeNode> newList=(ArrayList<TreeNode>)list.clone();
+            path(node.left,list,total);
+            path(node.right,newList,total);
+
+
+    }
+}
