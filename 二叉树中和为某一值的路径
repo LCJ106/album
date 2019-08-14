@@ -1,0 +1,38 @@
+/*输入一颗二叉树的根节点和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+(注意: 在返回值的list中，数组长度大的数组靠前)*/
+public class Solution {
+//实际上就是求出每条路径的和,符合要求的加入temp,然后按长度输出到res
+   public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+        ArrayList<ArrayList<Integer>> temp=new ArrayList<>();
+        ArrayList<ArrayList<Integer>> res=new ArrayList<>();
+        ArrayList<Integer> arrayList=new ArrayList<>();
+        findPath(root,target,arrayList,temp);
+        while(temp.size()!=0){
+            int record=0;
+            int length=temp.get(0).size();
+            for(int i=1;i<temp.size();i++){
+                if(length<temp.get(i).size())
+                    record=i;
+            }
+            res.add(temp.remove(record));
+        }
+        return res;
+    }
+    public void findPath(TreeNode node,int target,ArrayList<Integer> list,ArrayList<ArrayList<Integer>> res){
+        if(node==null)
+            return;
+        int val=node.val;
+        list.add(val);
+        //路径是到叶子结点的路径
+        if(val==target&&node.left==null&&node.right==null){
+            res.add(list);
+            return;
+        }
+        ArrayList<Integer> newList=(ArrayList<Integer>)list.clone();
+        findPath(node.left,target-val,list,res);
+        findPath(node.right,target-val,newList,res);
+
+
+    }
+    
+}
