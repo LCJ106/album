@@ -1,0 +1,33 @@
+/*给定一个二叉树和其中的一个结点，请找出中序遍历顺序的下一个结点并且返回。注意，树中的结点不仅包含左右子结点，同时包含指向父结点的指针。*/
+/*
+public class TreeLinkNode {
+    int val;
+    TreeLinkNode left = null;
+    TreeLinkNode right = null;
+    TreeLinkNode next = null;
+
+    TreeLinkNode(int val) {
+        this.val = val;
+    }
+}
+*/
+//当前节点有右子树找到对应节点,无右子树,判断当前节点是右节点还是左节点,左节点的话输出父节点,右节点继续判断父节点是左节点还是右节点
+import java.util.*;
+public class Solution {
+    public TreeLinkNode GetNext(TreeLinkNode pNode)
+    {
+        if(pNode.right!=null){
+            pNode=pNode.right;
+            while(pNode.left!=null)
+                return pNode=pNode.left;
+            return pNode;
+        }               
+       while(pNode.next!=null){
+             if(pNode==pNode.next.left)
+                  return pNode=pNode.next;
+             else
+                  pNode=pNode.next;
+        }
+        return null;      
+    }   
+}
