@@ -12,7 +12,8 @@ public class Solution {
     ArrayList<Character> list=new ArrayList<>();
     //Insert one char from stringstream
     public void Insert(char ch)
-    {
+    {   
+    //list存放字符,flag用于存放该字符是否重复对应的true/false
         if(list.contains(ch)){
             int index=list.indexOf(ch);
             flag.remove(index);
